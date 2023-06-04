@@ -7,7 +7,7 @@ from test_movie import LOTR_1_FAKE_RESPONSE, LOTR_2_FAKE_RESPONSE
 from test_quote import QUOTE_1_FAKE_RESPONSE, QUOTE_2_FAKE_RESPONSE
 
 
-def make_api_response(docs: Union[dict, Iterable[dict]]) -> dict:
+def _make_api_response(docs: Union[dict, Iterable[dict]]) -> dict:
     if isinstance(docs, dict):
         docs = [docs]
 
@@ -27,14 +27,14 @@ class FakeHttpClient:
 
     def __init__(self):
         self._api_responses = {
-            "movie/123": make_api_response(LOTR_1_FAKE_RESPONSE),
-            "movie": make_api_response([LOTR_1_FAKE_RESPONSE, LOTR_2_FAKE_RESPONSE]),
-            "movie/missing": make_api_response([]),
-            "quote/123": make_api_response(QUOTE_1_FAKE_RESPONSE),
-            "quote/missing": make_api_response([]),
-            "quote": make_api_response([QUOTE_1_FAKE_RESPONSE, QUOTE_2_FAKE_RESPONSE]),
-            "movie/456/quote": make_api_response([QUOTE_1_FAKE_RESPONSE]),
-            "movie/123/quote": make_api_response([]),
+            "movie/123": _make_api_response(LOTR_1_FAKE_RESPONSE),
+            "movie": _make_api_response([LOTR_1_FAKE_RESPONSE, LOTR_2_FAKE_RESPONSE]),
+            "movie/missing": _make_api_response([]),
+            "quote/123": _make_api_response(QUOTE_1_FAKE_RESPONSE),
+            "quote/missing": _make_api_response([]),
+            "quote": _make_api_response([QUOTE_1_FAKE_RESPONSE, QUOTE_2_FAKE_RESPONSE]),
+            "movie/456/quote": _make_api_response([QUOTE_1_FAKE_RESPONSE]),
+            "movie/123/quote": _make_api_response([]),
         }
 
     def get(self, url) -> dict:

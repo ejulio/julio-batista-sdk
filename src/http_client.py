@@ -40,7 +40,7 @@ class TooManyRequests(Exception):
 response_handler = Callable[[dict], requests.Response]
 
 
-class DefaultHttpClient:    
+class RequestsHttpClient:
     _apikey: str
     _base_url: str = "https://the-one-api.dev/v2/"
     _handlers: Dict[int, response_handler]

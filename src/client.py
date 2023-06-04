@@ -1,14 +1,14 @@
 from typing import Union, Iterable
 from movie import Movie
 from quote import Quote
-from http_client import DefaultHttpClient, HttpClient
+from http_client import RequestsHttpClient, HttpClient
 
 class Client:
     _http_client: HttpClient
 
     def __init__(self, apikey_or_client: Union[str, HttpClient]):
         if isinstance(apikey_or_client, str):
-            apikey_or_client = DefaultHttpClient(apikey_or_client)
+            apikey_or_client = RequestsHttpClient(apikey_or_client)
 
         self._http_client = apikey_or_client 
 

@@ -1,13 +1,13 @@
-from http_client import DefaultHttpClient, UnauthorizedError, InternalServerError, TooManyRequests
+from http_client import RequestsHttpClient, UnauthorizedError, InternalServerError, TooManyRequests
 import json
-from test_client import make_api_response
+from test_client import _make_api_response
 from test_movie import LOTR_1_FAKE_RESPONSE
 import pytest
 
 def test_get(requests_mock):
-    response = make_api_response(LOTR_1_FAKE_RESPONSE)
+    response = _make_api_response(LOTR_1_FAKE_RESPONSE)
     requests_mock.get("https://the-one-api.dev/v2/movie/123", text=json.dumps(response))
-    http = DefaultHttpClient("apikey-123")
+    http = RequestsHttpClient("apikey-123")
 
     result = http.get("movie/123")
 
@@ -16,11 +16,11 @@ def test_get(requests_mock):
 
 def test_invalid_apikey():
     with pytest.raises(ValueError):
-        DefaultHttpClient("")
+        RequestsHttpClient("")
 
 def test_handle_401(requests_mock):
     requests_mock.get("https://the-one-api.dev/v2/movie/123", status_code=401, text="response 401")
-    http = DefaultHttpClient("bad-api-key")
+    http = RequestsHttpClient("bad-api-key")
 
     with pytest.raises(UnauthorizedError) as e:
         http.get("movie/123")
@@ -30,7 +30,7 @@ def test_handle_401(requests_mock):
 
 def test_handle_500(requests_mock):
     requests_mock.get("https://the-one-api.dev/v2/movie/123", status_code=500, text="response 500")
-    http = DefaultHttpClient("api-key")
+    http = RequestsHttpClient("api-key")
 
     with pytest.raises(InternalServerError) as e:
         http.get("movie/123")
@@ -48,7 +48,7 @@ def test_handle_429(requests_mock):
             "Retry-After": "600",
         }
     )
-    http = DefaultHttpClient("api-key")
+    http = RequestsHttpClient("api-key")
 
     with pytest.raises(TooManyRequests) as e:
         http.get("movie/123")
@@ -60,7 +60,7 @@ def test_handle_429(requests_mock):
 
 def test_unknown_handler(requests_mock):
     requests_mock.get("https://the-one-api.dev/v2/movie/123", status_code=404)
-    http = DefaultHttpClient("api-key")
+    http = RequestsHttpClient("api-key")
 
     with pytest.raises(ValueError):
         http.get("movie/123")
