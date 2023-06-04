@@ -1,13 +1,11 @@
-from src.http_client import (
-    RequestsHttpClient,
-    UnauthorizedError,
-    InternalServerError,
-    TooManyRequests,
-)
 import json
+
+import pytest
 from test_client import _make_api_response
 from test_movie import LOTR_1_FAKE_RESPONSE
-import pytest
+
+from src.http_client import (InternalServerError, RequestsHttpClient,
+                             TooManyRequests, UnauthorizedError)
 
 
 def test_get(requests_mock):

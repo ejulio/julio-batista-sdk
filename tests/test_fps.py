@@ -1,5 +1,6 @@
-from src import fps
 import pytest
+
+from src import fps
 
 
 def test_sort_asc():

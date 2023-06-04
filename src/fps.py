@@ -1,4 +1,4 @@
-from typing import Protocol, Optional, Iterable
+from typing import Iterable, Optional, Protocol
 
 
 class QueryString(Protocol):

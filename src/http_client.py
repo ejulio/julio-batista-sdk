@@ -1,6 +1,7 @@
-from typing import Protocol, Dict, Callable
-import requests
 from os import path
+from typing import Callable, Dict, Protocol
+
+import requests
 
 
 class HttpClient(Protocol):

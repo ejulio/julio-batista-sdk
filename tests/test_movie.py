@@ -1,6 +1,5 @@
 from src.movie import Movie
 
-
 LOTR_1_FAKE_RESPONSE = {
     "_id": "123",
     "name": "LOTR",
