@@ -1,7 +1,8 @@
-from typing import Union, Iterable
+from typing import Union, Iterable, Callable
 from movie import Movie
 from quote import Quote
 from http_client import RequestsHttpClient, HttpClient
+
 
 class Client:
     _http_client: HttpClient
@@ -13,26 +14,26 @@ class Client:
         self._http_client = apikey_or_client 
 
     def get_movie(self, movie_id: str) -> Movie:
-        docs = self._http_client.get(f"movie/{movie_id}")["docs"]
-        if not docs:
+        res = self._get_api_resource(f"movie/{movie_id}", Movie.from_api_response)
+        if not res:
             return None
-        return Movie.from_api_response(docs[0])
+        return res[0]
     
     def get_movies(self) -> Iterable[Movie]:
-        docs = self._http_client.get("movie")["docs"]
-        return list(map(Movie.from_api_response, docs))
+        return self._get_api_resource("movie", Movie.from_api_response)
 
     def get_movie_quotes(self, movie_id) -> Iterable[Quote]:
-        docs = self._http_client.get(f"movie/{movie_id}/quote")["docs"]
-        return list(map(Quote.from_api_response, docs))
-    
+        return self._get_api_resource(f"movie/{movie_id}/quote", Quote.from_api_response)
+        
     def get_quotes(self) -> Iterable[Quote]:
-        docs = self._http_client.get("quote")["docs"]
-        return list(map(Quote.from_api_response, docs))
-
+        return self._get_api_resource("quote", Quote.from_api_response)
+        
     def get_quote(self, quote_id: str) -> Quote:
-        docs = self._http_client.get(f"quote/{quote_id}")["docs"]
-        if not docs:
+        res = self._get_api_resource(f"quote/{quote_id}", Quote.from_api_response)
+        if not res:
             return None
-        return Quote.from_api_response(docs[0])
+        return res[0]
     
+    def _get_api_resource(self, url: str, parse: Callable) -> Iterable:
+        docs = self._http_client.get(url)["docs"]
+        return list(map(parse, docs))
