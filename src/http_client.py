@@ -8,13 +8,33 @@ class HttpClient(Protocol):
         """Performs a HTTP GET request and returns the parsed result"""
 
 
-class UnauthorizedError(ValueError):
+class UnauthorizedError(Exception):
     apikey: str
     response_text: str
 
     def __init__(self, apikey: str, response_text: str):
         self.apikey = apikey
         self.response_text = response_text
+
+
+class InternalServerError(Exception):
+    response_text: str
+
+    def __init__(self, response_text: str):
+        self.response_text = response_text
+
+
+class TooManyRequests(Exception):
+    response_text: str
+    ratelimit_limit: int
+    ratelimit_reset: int
+    retry_after: int
+
+    def __init__(self, response_text: str, limit: int, reset: int, retry: int):
+        self.response_text = response_text
+        self.ratelimit_limit = limit
+        self.ratelimit_reset = reset
+        self.retry_after = retry
 
 
 response_handler = Callable[[dict], requests.Response]
@@ -33,6 +53,8 @@ class DefaultHttpClient:
         self._handlers = dict()
         self.with_response_handler(200, self._handle_200)
         self.with_response_handler(401, self._handle_401)
+        self.with_response_handler(429, self._handle_429)
+        self.with_response_handler(500, self._handle_500)
 
     def get(self, url: str) -> dict:
         return self.handle_response(self.make_request(url))
@@ -47,6 +69,11 @@ class DefaultHttpClient:
 
     def handle_response(self, response: requests.Response) -> dict:
         handler = self._handlers.get(response.status_code)
+        if not handler:
+            raise ValueError(
+                f"unknown response handler for status code {response.status_code}: {response.text}"
+            )
+        
         return handler(response)
     
     def _handle_200(self, response: requests.Response) -> dict:
@@ -54,3 +81,14 @@ class DefaultHttpClient:
     
     def _handle_401(self, response: requests.Response) -> dict:
         raise UnauthorizedError(f"{self._apikey[:5]}...", response.text)
+    
+    def _handle_500(self, response: requests.Response) -> dict:
+        raise InternalServerError(response.text)
+    
+    def _handle_429(self, response: requests.Response) -> dict:
+        raise TooManyRequests(
+            response.text,
+            response.headers.get("X-RateLimit-Limit"),
+            response.headers.get("X-RateLimit-Reset"),
+            response.headers.get("Retry-After"),
+        )
