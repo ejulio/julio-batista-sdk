@@ -1,27 +1,22 @@
+
+from typing import Union, Iterable
 from client import Client
 from movie import Movie
+from test_movie import LOTR_1_FAKE_RESPONSE, LOTR_2_FAKE_RESPONSE
 
-LOTR_1_FAKE_RESPONSE = {
-    "_id":"123",
-    "name":"LOTR",
-    "runtimeInMinutes":1,
-    "budgetInMillions":2,
-    "boxOfficeRevenueInMillions":3,
-    "academyAwardNominations":4,
-    "academyAwardWins":5,
-    "rottenTomatoesScore":6
-}
 
-LOTR_2_FAKE_RESPONSE = {
-    "_id":"456",
-    "name":"LOTR 2",
-    "runtimeInMinutes":6,
-    "budgetInMillions":5,
-    "boxOfficeRevenueInMillions":4,
-    "academyAwardNominations":3,
-    "academyAwardWins":2,
-    "rottenTomatoesScore":1
-}
+def make_api_response(docs: Union[dict, Iterable[dict]]) -> dict:
+    if isinstance(docs, dict):
+        docs = [docs]
+
+    return {
+        "docs": docs,
+        "total": 1,
+        "limit": 1000,
+        "offset": 0,
+        "page": 1,
+        "pages": 1
+    }
 
 
 class FakeHttpClient:
@@ -30,30 +25,9 @@ class FakeHttpClient:
 
     def __init__(self):
         self._responses = {
-            "movie/123": {
-                "docs":[LOTR_1_FAKE_RESPONSE],
-                "total":1,
-                "limit":1000,
-                "offset":0,
-                "page":1,
-                "pages":1
-            },
-            "movie": {
-                "docs":[LOTR_1_FAKE_RESPONSE, LOTR_2_FAKE_RESPONSE],
-                "total":1,
-                "limit":1000,
-                "offset":0,
-                "page":1,
-                "pages":1
-            },
-            "movie/missing": {
-                "docs":[],
-                "total":1,
-                "limit":1000,
-                "offset":0,
-                "page":1,
-                "pages":1
-            }
+            "movie/123": make_api_response(LOTR_1_FAKE_RESPONSE),
+            "movie": make_api_response([LOTR_1_FAKE_RESPONSE, LOTR_2_FAKE_RESPONSE]),
+            "movie/missing": make_api_response([])
         }
 
     def get(self, url) -> dict:
