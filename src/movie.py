@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class Movie:
     ID: str
@@ -12,14 +13,14 @@ class Movie:
     rotten_tomatoes_score: int
 
     @staticmethod
-    def from_api_response(response: dict) -> 'Movie':
+    def from_api_response(response: dict) -> "Movie":
         return Movie(
-            ID=response['_id'],
-            name=response['name'],
-            runtime_in_minutes=response['runtimeInMinutes'],
-            budget_in_millions=response['budgetInMillions'],
-            box_office_revenue_in_millions=response['boxOfficeRevenueInMillions'],
-            academy_award_nominations=response['academyAwardNominations'],
-            academy_award_wins=response['academyAwardWins'],
-            rotten_tomatoes_score=response['rottenTomatoesScore'],
+            ID=response["_id"],
+            name=response["name"],
+            runtime_in_minutes=response["runtimeInMinutes"],
+            budget_in_millions=response["budgetInMillions"],
+            box_office_revenue_in_millions=response["boxOfficeRevenueInMillions"],
+            academy_award_nominations=response["academyAwardNominations"],
+            academy_award_wins=response["academyAwardWins"],
+            rotten_tomatoes_score=response["rottenTomatoesScore"],
         )

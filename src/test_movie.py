@@ -2,27 +2,26 @@ from movie import Movie
 
 
 LOTR_1_FAKE_RESPONSE = {
-    "_id":"123",
-    "name":"LOTR",
-    "runtimeInMinutes":1,
-    "budgetInMillions":2,
-    "boxOfficeRevenueInMillions":3,
-    "academyAwardNominations":4,
-    "academyAwardWins":5,
-    "rottenTomatoesScore":6
+    "_id": "123",
+    "name": "LOTR",
+    "runtimeInMinutes": 1,
+    "budgetInMillions": 2,
+    "boxOfficeRevenueInMillions": 3,
+    "academyAwardNominations": 4,
+    "academyAwardWins": 5,
+    "rottenTomatoesScore": 6,
 }
 
 LOTR_2_FAKE_RESPONSE = {
-    "_id":"456",
-    "name":"LOTR 2",
-    "runtimeInMinutes":6,
-    "budgetInMillions":5,
-    "boxOfficeRevenueInMillions":4,
-    "academyAwardNominations":3,
-    "academyAwardWins":2,
-    "rottenTomatoesScore":1
+    "_id": "456",
+    "name": "LOTR 2",
+    "runtimeInMinutes": 6,
+    "budgetInMillions": 5,
+    "boxOfficeRevenueInMillions": 4,
+    "academyAwardNominations": 3,
+    "academyAwardWins": 2,
+    "rottenTomatoesScore": 1,
 }
-
 
 
 def test_from_api_response():

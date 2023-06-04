@@ -58,13 +58,16 @@ class RequestsHttpClient:
 
     def get(self, url: str) -> dict:
         return self.handle_response(self.make_request(url))
-    
-    def make_request(self, url: str) -> requests.Response:
-        return requests.get(path.join(self._base_url, url), headers={
-            "Authorization": f"Bearer {self._apikey}"
-        })
 
-    def with_response_handler(self, status_code: int, handler: response_handler) -> None:
+    def make_request(self, url: str) -> requests.Response:
+        return requests.get(
+            path.join(self._base_url, url),
+            headers={"Authorization": f"Bearer {self._apikey}"},
+        )
+
+    def with_response_handler(
+        self, status_code: int, handler: response_handler
+    ) -> None:
         self._handlers[status_code] = handler
 
     def handle_response(self, response: requests.Response) -> dict:
@@ -73,18 +76,18 @@ class RequestsHttpClient:
             raise ValueError(
                 f"unknown response handler for status code {response.status_code}: {response.text}"
             )
-        
+
         return handler(response)
-    
+
     def _handle_200(self, response: requests.Response) -> dict:
         return response.json()
-    
+
     def _handle_401(self, response: requests.Response) -> dict:
         raise UnauthorizedError(f"{self._apikey[:5]}...", response.text)
-    
+
     def _handle_500(self, response: requests.Response) -> dict:
         raise InternalServerError(response.text)
-    
+
     def _handle_429(self, response: requests.Response) -> dict:
         raise TooManyRequests(
             response.text,

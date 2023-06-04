@@ -5,7 +5,7 @@ QUOTE_1_FAKE_RESPONSE = {
     "dialog": "this is a test",
     "movie": "456",
     "character": "789",
-    "id": "123"
+    "id": "123",
 }
 
 QUOTE_2_FAKE_RESPONSE = {
@@ -13,7 +13,7 @@ QUOTE_2_FAKE_RESPONSE = {
     "dialog": "another fake quote",
     "movie": "987",
     "character": "654",
-    "id": "321"
+    "id": "321",
 }
 
 

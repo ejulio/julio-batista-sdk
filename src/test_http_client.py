@@ -1,8 +1,14 @@
-from http_client import RequestsHttpClient, UnauthorizedError, InternalServerError, TooManyRequests
+from http_client import (
+    RequestsHttpClient,
+    UnauthorizedError,
+    InternalServerError,
+    TooManyRequests,
+)
 import json
 from test_client import _make_api_response
 from test_movie import LOTR_1_FAKE_RESPONSE
 import pytest
+
 
 def test_get(requests_mock):
     response = _make_api_response(LOTR_1_FAKE_RESPONSE)
@@ -14,12 +20,16 @@ def test_get(requests_mock):
     assert result == response
     assert requests_mock.last_request.headers["Authorization"] == "Bearer apikey-123"
 
+
 def test_invalid_apikey():
     with pytest.raises(ValueError):
         RequestsHttpClient("")
 
+
 def test_handle_401(requests_mock):
-    requests_mock.get("https://the-one-api.dev/v2/movie/123", status_code=401, text="response 401")
+    requests_mock.get(
+        "https://the-one-api.dev/v2/movie/123", status_code=401, text="response 401"
+    )
     http = RequestsHttpClient("bad-api-key")
 
     with pytest.raises(UnauthorizedError) as e:
@@ -28,13 +38,17 @@ def test_handle_401(requests_mock):
         assert e.apikey == "bad-a..."
         assert e.response_text == "response 401"
 
+
 def test_handle_500(requests_mock):
-    requests_mock.get("https://the-one-api.dev/v2/movie/123", status_code=500, text="response 500")
+    requests_mock.get(
+        "https://the-one-api.dev/v2/movie/123", status_code=500, text="response 500"
+    )
     http = RequestsHttpClient("api-key")
 
     with pytest.raises(InternalServerError) as e:
         http.get("movie/123")
         assert e.response_text == "response 500"
+
 
 def test_handle_429(requests_mock):
     requests_mock.get(
@@ -46,7 +60,7 @@ def test_handle_429(requests_mock):
             "X-RateLimit-Remaining": "0",
             "X-RateLimit-Reset": "1685881627",
             "Retry-After": "600",
-        }
+        },
     )
     http = RequestsHttpClient("api-key")
 
@@ -57,6 +71,7 @@ def test_handle_429(requests_mock):
         assert e.ratelimit_limit == 100
         assert e.ratelimit_reset == 1685881627
         assert e.retry_after == 600
+
 
 def test_unknown_handler(requests_mock):
     requests_mock.get("https://the-one-api.dev/v2/movie/123", status_code=404)

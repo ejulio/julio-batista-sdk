@@ -4,6 +4,7 @@ from client import Client
 from http_client import UnauthorizedError, InternalServerError, TooManyRequests
 import fps
 
+
 def test_api():
     """This is an end to end test to ensure the SDK
     hits the API and handles the responses properly"""
@@ -22,7 +23,6 @@ def test_api():
         m = client.get_movie("invalid-movie")
         print("invalid movie", e)
 
-
     movies = client.get_movies()
     assert len(movies) > 0
     print("## MOVIES ##\n", movies)
@@ -35,7 +35,7 @@ def test_api():
 
         quotes = client.get_movie_quotes(m.ID)
         print(f"## {len(quotes)} QUOTES ##\n", quotes)
-    
+
     quotes = client.get_quotes()
     assert len(quotes) > 0
     print("## QUOTES ##\n", quotes[:2])
