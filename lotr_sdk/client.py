@@ -1,9 +1,9 @@
 from typing import Callable, Iterable, Optional, Union
 
-from src.fps import QueryString
-from src.http_client import HttpClient, RequestsHttpClient
-from src.movie import Movie
-from src.quote import Quote
+from lotr_sdk.fps import QueryString
+from lotr_sdk.http_client import HttpClient, RequestsHttpClient
+from lotr_sdk.movie import Movie
+from lotr_sdk.quote import Quote
 
 
 class Client:

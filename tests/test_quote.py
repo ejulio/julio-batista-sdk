@@ -1,4 +1,4 @@
-from src.quote import Quote
+from lotr_sdk.quote import Quote
 
 QUOTE_1_FAKE_RESPONSE = {
     "_id": "123",

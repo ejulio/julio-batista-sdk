@@ -1,6 +1,6 @@
 import pytest
 
-from src import fps
+from lotr_sdk import fps
 
 
 def test_sort_asc():

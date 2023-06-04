@@ -3,10 +3,10 @@ from typing import Iterable, Union
 from test_movie import LOTR_1_FAKE_RESPONSE, LOTR_2_FAKE_RESPONSE
 from test_quote import QUOTE_1_FAKE_RESPONSE, QUOTE_2_FAKE_RESPONSE
 
-from src import fps
-from src.client import Client
-from src.movie import Movie
-from src.quote import Quote
+from lotr_sdk import fps
+from lotr_sdk.client import Client
+from lotr_sdk.movie import Movie
+from lotr_sdk.quote import Quote
 
 
 def _make_api_response(docs: Union[dict, Iterable[dict]]) -> dict:

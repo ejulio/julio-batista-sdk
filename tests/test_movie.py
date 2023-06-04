@@ -1,4 +1,4 @@
-from src.movie import Movie
+from lotr_sdk.movie import Movie
 
 LOTR_1_FAKE_RESPONSE = {
     "_id": "123",

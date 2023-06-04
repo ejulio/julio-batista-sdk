@@ -4,7 +4,7 @@ import pytest
 from test_client import _make_api_response
 from test_movie import LOTR_1_FAKE_RESPONSE
 
-from src.http_client import (InternalServerError, RequestsHttpClient,
+from lotr_sdk.http_client import (InternalServerError, RequestsHttpClient,
                              TooManyRequests, UnauthorizedError)
 
 

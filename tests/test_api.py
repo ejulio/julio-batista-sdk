@@ -2,9 +2,9 @@ import os
 
 import pytest
 
-from src import fps
-from src.client import Client
-from src.http_client import (InternalServerError, TooManyRequests,
+from lotr_sdk import fps
+from lotr_sdk.client import Client
+from lotr_sdk.http_client import (InternalServerError, TooManyRequests,
                              UnauthorizedError)
 
 
