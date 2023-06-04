@@ -1,16 +1,7 @@
-from typing import Protocol, Union, Iterable
+from typing import Union, Iterable
 from movie import Movie
 from quote import Quote
-
-class HttpClient(Protocol):
-    def get(self, url: str) -> dict:
-        """Performs a HTTP GET request and returns the parsed result"""
-
-
-class DefaultHttpClient:    
-    def get(self, url: str) -> dict:
-        raise NotImplementedError()
-
+from http_client import DefaultHttpClient, HttpClient
 
 class Client:
     _http_client: HttpClient
