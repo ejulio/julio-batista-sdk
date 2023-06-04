@@ -35,7 +35,8 @@ class Client:
         raise NotImplementedError()
     
     def get_quotes(self) -> Iterable[Quote]:
-        raise NotImplementedError()
+        docs = self._http_client.get("quote")["docs"]
+        return list(map(Quote.parse_api_response, docs))
     
     def get_quote(self, quote_id: str) -> Quote:
         docs = self._http_client.get(f"quote/{quote_id}")["docs"]

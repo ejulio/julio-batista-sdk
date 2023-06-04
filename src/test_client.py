@@ -32,6 +32,7 @@ class FakeHttpClient:
             "movie/missing": make_api_response([]),
             "quote/123": make_api_response(QUOTE_1_FAKE_RESPONSE),
             "quote/missing": make_api_response([]),
+            "quote": make_api_response([QUOTE_1_FAKE_RESPONSE, QUOTE_2_FAKE_RESPONSE]),
         }
 
     def get(self, url) -> dict:
@@ -70,3 +71,11 @@ def test_get_missing_quote():
     quote = c.get_quote("missing")
 
     assert quote is None
+
+def test_get_quotes():
+    c = Client(FakeHttpClient())
+    quotes = c.get_quotes()
+
+    assert len(quotes) == 2
+    assert quotes[0] == Quote.parse_api_response(QUOTE_1_FAKE_RESPONSE)
+    assert quotes[1] == Quote.parse_api_response(QUOTE_2_FAKE_RESPONSE)
