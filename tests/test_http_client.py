@@ -1,4 +1,4 @@
-from http_client import (
+from src.http_client import (
     RequestsHttpClient,
     UnauthorizedError,
     InternalServerError,

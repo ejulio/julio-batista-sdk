@@ -1,8 +1,8 @@
 import os
 import pytest
-from client import Client
-from http_client import UnauthorizedError, InternalServerError, TooManyRequests
-import fps
+from src.client import Client
+from src.http_client import UnauthorizedError, InternalServerError, TooManyRequests
+from src import fps
 
 
 def test_api():

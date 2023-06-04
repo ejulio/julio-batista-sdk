@@ -1,8 +1,8 @@
 from typing import Union, Iterable, Callable, Optional
-from movie import Movie
-from quote import Quote
-from http_client import RequestsHttpClient, HttpClient
-from fps import QueryString
+from src.movie import Movie
+from src.quote import Quote
+from src.http_client import RequestsHttpClient, HttpClient
+from src.fps import QueryString
 
 
 class Client:

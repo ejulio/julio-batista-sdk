@@ -1,4 +1,4 @@
-from movie import Movie
+from src.movie import Movie
 
 
 LOTR_1_FAKE_RESPONSE = {

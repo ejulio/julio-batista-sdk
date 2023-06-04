@@ -1,4 +1,4 @@
-import fps
+from src import fps
 import pytest
 
 

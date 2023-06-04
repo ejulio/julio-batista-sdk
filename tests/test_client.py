@@ -1,10 +1,10 @@
 from typing import Union, Iterable
-from client import Client
-from movie import Movie
-from quote import Quote
+from src.client import Client
+from src.movie import Movie
+from src.quote import Quote
 from test_movie import LOTR_1_FAKE_RESPONSE, LOTR_2_FAKE_RESPONSE
 from test_quote import QUOTE_1_FAKE_RESPONSE, QUOTE_2_FAKE_RESPONSE
-import fps
+from src import fps
 
 
 def _make_api_response(docs: Union[dict, Iterable[dict]]) -> dict:

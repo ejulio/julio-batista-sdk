@@ -1,4 +1,4 @@
-from quote import Quote
+from src.quote import Quote
 
 QUOTE_1_FAKE_RESPONSE = {
     "_id": "123",
