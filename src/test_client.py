@@ -2,7 +2,9 @@
 from typing import Union, Iterable
 from client import Client
 from movie import Movie
+from quote import Quote
 from test_movie import LOTR_1_FAKE_RESPONSE, LOTR_2_FAKE_RESPONSE
+from test_quote import QUOTE_1_FAKE_RESPONSE, QUOTE_2_FAKE_RESPONSE
 
 
 def make_api_response(docs: Union[dict, Iterable[dict]]) -> dict:
@@ -27,7 +29,9 @@ class FakeHttpClient:
         self._responses = {
             "movie/123": make_api_response(LOTR_1_FAKE_RESPONSE),
             "movie": make_api_response([LOTR_1_FAKE_RESPONSE, LOTR_2_FAKE_RESPONSE]),
-            "movie/missing": make_api_response([])
+            "movie/missing": make_api_response([]),
+            "quote/123": make_api_response(QUOTE_1_FAKE_RESPONSE),
+            "quote/missing": make_api_response([]),
         }
 
     def get(self, url) -> dict:
@@ -54,3 +58,15 @@ def test_get_movies():
     assert len(movies) == 2
     assert movies[0] == Movie.from_api_response(LOTR_1_FAKE_RESPONSE)
     assert movies[1] == Movie.from_api_response(LOTR_2_FAKE_RESPONSE)
+
+def test_get_quote():
+    c = Client(FakeHttpClient())
+    quote = c.get_quote("123")
+
+    assert quote == Quote.parse_api_response(QUOTE_1_FAKE_RESPONSE)
+
+def test_get_missing_quote():
+    c = Client(FakeHttpClient())
+    quote = c.get_quote("missing")
+
+    assert quote is None

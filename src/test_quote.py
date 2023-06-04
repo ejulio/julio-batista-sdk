@@ -1,13 +1,24 @@
 from quote import Quote
 
+QUOTE_1_FAKE_RESPONSE = {
+    "_id": "123",
+    "dialog": "this is a test",
+    "movie": "456",
+    "character": "789",
+    "id": "123"
+}
+
+QUOTE_2_FAKE_RESPONSE = {
+    "_id": "456",
+    "dialog": "another fake quote",
+    "movie": "987",
+    "character": "654",
+    "id": "321"
+}
+
+
 def test_parse_pai_response():
-    q = Quote.parse_api_response({
-        "_id": "123",
-        "dialog": "this is a test",
-        "movie": "456",
-        "character": "789",
-        "id": "123"
-    })
+    q = Quote.parse_api_response(QUOTE_1_FAKE_RESPONSE)
 
     assert q.ID == "123"
     assert q.dialog == "this is a test"
