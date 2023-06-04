@@ -1,7 +1,8 @@
 import os
 import pytest
 from client import Client
-
+from http_client import UnauthorizedError, InternalServerError, TooManyRequests
+import fps
 
 def test_api():
     """This is an end to end test to ensure the SDK
@@ -9,8 +10,18 @@ def test_api():
     apikey = os.environ.get("TEST_APIKEY")
     if apikey is None:
         pytest.skip("TEST_APIKEY not set, skipping...")
-    
+
+    with pytest.raises(UnauthorizedError) as e:
+        client = Client("wrong-apikey")
+        client.get_movies()
+        print("unauthorized", e)
+
     client = Client(apikey)
+
+    with pytest.raises(InternalServerError) as e:
+        m = client.get_movie("invalid-movie")
+        print("invalid movie", e)
+
 
     movies = client.get_movies()
     assert len(movies) > 0
@@ -27,10 +38,18 @@ def test_api():
     
     quotes = client.get_quotes()
     assert len(quotes) > 0
-    print("## QUOTES ##\n", quotes)
+    print("## QUOTES ##\n", quotes[:2])
 
     for quote in quotes[:3]:
         print(quote)
 
         q = client.get_quote(quote.ID)
         print(q)
+
+    with pytest.raises(TooManyRequests) as e:
+        for i in range(200):
+            quotes = client.get_quotes(
+                sorting=fps.Desc("dialog"),
+                pagination=fps.Page(offset=i, limit=1),
+            )
+            print(quotes)
