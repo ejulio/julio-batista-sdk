@@ -33,14 +33,15 @@ class Client:
 
     def get_movie_quotes(self, movie_id) -> Iterable[Quote]:
         docs = self._http_client.get(f"movie/{movie_id}/quote")["docs"]
-        return list(map(Quote.parse_api_response, docs))
+        return list(map(Quote.from_api_response, docs))
     
     def get_quotes(self) -> Iterable[Quote]:
         docs = self._http_client.get("quote")["docs"]
-        return list(map(Quote.parse_api_response, docs))
+        return list(map(Quote.from_api_response, docs))
 
     def get_quote(self, quote_id: str) -> Quote:
         docs = self._http_client.get(f"quote/{quote_id}")["docs"]
         if not docs:
             return None
-        return Quote.parse_api_response(docs[0])
+        return Quote.from_api_response(docs[0])
+    

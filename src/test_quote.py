@@ -17,8 +17,8 @@ QUOTE_2_FAKE_RESPONSE = {
 }
 
 
-def test_parse_pai_response():
-    q = Quote.parse_api_response(QUOTE_1_FAKE_RESPONSE)
+def test_from_pai_response():
+    q = Quote.from_api_response(QUOTE_1_FAKE_RESPONSE)
 
     assert q.ID == "123"
     assert q.dialog == "this is a test"

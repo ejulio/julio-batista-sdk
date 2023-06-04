@@ -23,10 +23,10 @@ def make_api_response(docs: Union[dict, Iterable[dict]]) -> dict:
 
 class FakeHttpClient:
 
-    _responses: dict
+    _api_responses: dict
 
     def __init__(self):
-        self._responses = {
+        self._api_responses = {
             "movie/123": make_api_response(LOTR_1_FAKE_RESPONSE),
             "movie": make_api_response([LOTR_1_FAKE_RESPONSE, LOTR_2_FAKE_RESPONSE]),
             "movie/missing": make_api_response([]),
@@ -38,7 +38,7 @@ class FakeHttpClient:
         }
 
     def get(self, url) -> dict:
-        return self._responses[url]
+        return self._api_responses[url]
 
 
 def test_get_movie():
@@ -66,7 +66,7 @@ def test_get_quote():
     c = Client(FakeHttpClient())
     quote = c.get_quote("123")
 
-    assert quote == Quote.parse_api_response(QUOTE_1_FAKE_RESPONSE)
+    assert quote == Quote.from_api_response(QUOTE_1_FAKE_RESPONSE)
 
 def test_get_missing_quote():
     c = Client(FakeHttpClient())
@@ -79,15 +79,15 @@ def test_get_quotes():
     quotes = c.get_quotes()
 
     assert len(quotes) == 2
-    assert quotes[0] == Quote.parse_api_response(QUOTE_1_FAKE_RESPONSE)
-    assert quotes[1] == Quote.parse_api_response(QUOTE_2_FAKE_RESPONSE)
+    assert quotes[0] == Quote.from_api_response(QUOTE_1_FAKE_RESPONSE)
+    assert quotes[1] == Quote.from_api_response(QUOTE_2_FAKE_RESPONSE)
 
 def test_get_movie_quotes():
     c = Client(FakeHttpClient())
     quotes = c.get_movie_quotes("456")
 
     assert len(quotes) == 1
-    assert quotes[0] == Quote.parse_api_response(QUOTE_1_FAKE_RESPONSE)
+    assert quotes[0] == Quote.from_api_response(QUOTE_1_FAKE_RESPONSE)
 
 def test_get_missing_movie_quotes():
     c = Client(FakeHttpClient())
